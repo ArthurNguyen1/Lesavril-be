@@ -8,9 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDBContext>(options => 
+builder.Services.AddDbContext<CompanyDbContext>(options => 
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+    // connect to postgres with connection string from app settings
+    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
 });
 
 var app = builder.Build();

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
-namespace api.Models;
+namespace api.Data;
 
 public partial class CompanyDbContext : DbContext
 {
@@ -10,8 +14,8 @@ public partial class CompanyDbContext : DbContext
     {
     }
 
-    public CompanyDbContext(DbContextOptions<CompanyDbContext> options)
-        : base(options)
+    public CompanyDbContext(DbContextOptions<CompanyDbContext> options) 
+        : base(options) // base ~= DbContext, use it here because we can not call the construtor of base class in a constructor.
     {
     }
 
@@ -52,7 +56,6 @@ public partial class CompanyDbContext : DbContext
     public virtual DbSet<Wishlist> Wishlists { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Server=localhost;Port=8386;User Id=postgres;Password=287071;Database=postgres;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
