@@ -52,5 +52,28 @@ namespace api.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new { id = addressModel.Id }, addressModel.ToAddressDto());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateAddressRequestDto updateDto)
+        {
+            var addressModel = _context.Addresses.FirstOrDefault(x => x.Id == id);
+
+            if(addressModel == null)
+            {
+                return NotFound();
+            }
+
+            addressModel.DetailedAddress = updateDto.DetailedAddress;
+            addressModel.District = updateDto.District;
+            addressModel.City = updateDto.City;
+            addressModel.Country = updateDto.Country;
+            addressModel.CreatedAt = updateDto.CreatedAt;
+            addressModel.UpdatedAt = updateDto.UpdatedAt;
+
+            _context.SaveChanges();
+
+            return Ok(addressModel.ToAddressDto());
+        }
     }
 }
