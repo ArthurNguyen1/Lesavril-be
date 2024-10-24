@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Address;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,9 @@ namespace api.Controllers
     [ApiController]
     public class AddressController : ControllerBase
     {
+        // In MVC, between Model and Controller are a Mapper and a Dto.
+        // Dto is used as a transaction to avoid users from getting data straightly from Model.
+        // Mapper is used as an extension for controller, and help controller to connect with dto.  
         private readonly CompanyDbContext _context;
         public AddressController(CompanyDbContext context)
         {
@@ -38,6 +42,15 @@ namespace api.Controllers
             }
 
             return Ok(address.ToAddressDto());
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateAddressRequestDto addressDto)
+        {
+            var addressModel = addressDto.ToAddressFromCreateDTO();
+            _context.Addresses.Add(addressModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = addressModel.Id }, addressModel.ToAddressDto());
         }
     }
 }

@@ -28,5 +28,23 @@ namespace api.Mappers
                 UpdatedAt = addressModel.UpdatedAt
             };
         }
+
+        public static Address ToAddressFromCreateDTO(this CreateAddressRequestDto addressDto)
+        {
+            return new Address
+            {
+                DetailedAddress = addressDto.DetailedAddress,
+
+                District = addressDto.District,
+
+                City = addressDto.City, 
+
+                Country = addressDto.Country,
+
+                CreatedAt = addressDto.CreatedAt,
+
+                UpdatedAt = addressDto.UpdatedAt
+            };
+        }
     }
 }
